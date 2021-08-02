@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getallProductsFlow" doc:id="0900389c-551e-426c-8006-906905a8af9e" >
+		<db:select doc:name="Select" doc:id="75b5f0d8-ed8e-4d87-9ea2-9a7422545660" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from products]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="a3fbb3db-9124-4e53-9c36-89d6c63f5f03" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	ProductID: payload01.Pid,
+	ProductName: payload01.prodName default "",
+	ProductDesc: payload01.prodDesc default "",
+	ProductPrice: payload01.prodPrice default 0,
+	QuantityAvailable: payload01.qtyAvailable default 0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="getProductbyidFlow" doc:id="2312a779-b584-498a-8611-15046e0b1344" >
+		<db:query-single doc:name="Query single" doc:id="cc4f900b-eeb9-4634-921a-46a870a99c13" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from products where Pid= :Pid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	Pid: vars.pid
+	
+}]]]></db:input-parameters>
+		</db:query-single>
+		<ee:transform doc:name="Transform Message" doc:id="8bfed602-a218-4906-9f2b-8fad1ab2d142" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	ProductID: payload.Pid,
+	ProductName: payload.prodName default "",
+	ProductDesc: payload.prodDesc default "",
+	ProductPrice: payload.prodPrice default 0,
+	QuantityAvailable: payload.qtyAvailable default 0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="array" format="json">
+      <types:shape format="weave" example="examples/products metadat.json"><![CDATA[%dw 2.0
+
+type array = Array<{|  ProductID: String,   ProductName: String,   ProductDesc: String,   ProductPrice: Number {"typeId": "int"},   QuantityAvailable: Number {"typeId": "int"}|}> {"example": "[{\\\"ProductID\\\":\\\"P1001\\\",\\\"ProductName\\\":\\\"Casual Shirt\\\",\\\"ProductDesc\\\":\\\"Garments\\\",\\\"ProductPrice\\\":280,\\\"QuantityAvailable\\\":30}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="obj" format="json">
+      <types:shape format="weave" example="examples/productobj-1.json"><![CDATA[%dw 2.0
+
+type obj = {|
+  ProductID: String, 
+  ProductName: String, 
+  ProductDesc: String, 
+  ProductPrice: Number {"typeId": "int"}, 
+  QuantityAvailable: Number {"typeId": "int"}
+|} {"example": "{\\\"ProductID\\\":\\\"P1001\\\",\\\"ProductName\\\":\\\"Casual Shirt\\\",\\\"ProductDesc\\\":\\\"Garments\\\",\\\"ProductPrice\\\":280,\\\"QuantityAvailable\\\":30}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#a3fbb3db-9124-4e53-9c36-89d6c63f5f03">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="array[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8bfed602-a218-4906-9f2b-8fad1ab2d142">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="obj"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

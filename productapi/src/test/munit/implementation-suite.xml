@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-suite.xml" />
+	<munit:test name="getallProductsFlow-test" doc:id="549a7313-0052-452b-b0e1-27f0bb002eb0" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="93873ad1-3c77-4f11-b9e2-08ebb672dddd" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://getallProductsFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://getallProductsFlowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getallProductsFlowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getallProductsFlow" doc:id="b982d516-925d-4c2d-8f87-0af50d02dcc8" name="getallProductsFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="efbcef6f-8be4-4c40-ae1a-65752595dc04" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getallProductsFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="getProductbyidFlow-test" doc:id="3430e93c-9b7f-42d0-8a7a-2b2b49224600" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="30e08ca6-2b18-4fdf-8d7d-96f77053ed2c" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://getProductbyidFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://getProductbyidFlowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getProductbyidFlowtest\set-event_variable_.dwl')]" />
+					<munit:variable key="pid" value="#[output application/java --- readUrl('classpath://getProductbyidFlowtest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getProductbyidFlow" doc:id="6e74eaa7-b16d-4102-ab14-cb3213c57e4d" name="getProductbyidFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e5a21ccb-f26c-4b60-bf15-6235af74f3f2" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getProductbyidFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

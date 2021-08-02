@@ -1,0 +1,10 @@
+[
+	{  
+			"ProductID" : "P1001",
+    			"ProductName" : "Casual Shirt",
+    			"ProductDesc" : "Garments",
+    			"ProductPrice" : 280,
+    			"QuantityAvailable" : 30
+	}
+	
+]
